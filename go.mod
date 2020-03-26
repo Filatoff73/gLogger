@@ -1,4 +1,4 @@
-module github.com/google/logger
+module github.com/Filatoff73/logger
 
 go 1.12
 
