@@ -1,4 +1,4 @@
-module github.com/Filatoff73/logger
+module github.com/Filatoff73/glogger
 
 go 1.12
 
