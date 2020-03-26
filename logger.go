@@ -126,6 +126,10 @@ func Init(name string, verbose, systemLog bool, logFile io.Writer) *Logger {
 	return &l
 }
 
+func (l *Logger) SetPrefix(prefix string) {
+	l.prefix = prefix
+}
+
 // Close closes the default logger.
 func Close() {
 	defaultLogger.Close()
@@ -140,6 +144,7 @@ type Logger struct {
 	fatalLog    *log.Logger
 	closers     []io.Closer
 	initialized bool
+	prefix string
 }
 
 func (l *Logger) output(s severity, depth int, txt string) {
@@ -147,13 +152,13 @@ func (l *Logger) output(s severity, depth int, txt string) {
 	defer logLock.Unlock()
 	switch s {
 	case sInfo:
-		l.infoLog.Output(3+depth, txt)
+		l.infoLog.Output(3+depth,l.prefix + " " + txt)
 	case sWarning:
-		l.warningLog.Output(3+depth, txt)
+		l.warningLog.Output(3+depth,l.prefix + " " +  txt)
 	case sError:
-		l.errorLog.Output(3+depth, txt)
+		l.errorLog.Output(3+depth,l.prefix + " " +  txt)
 	case sFatal:
-		l.fatalLog.Output(3+depth, txt)
+		l.fatalLog.Output(3+depth,l.prefix + " " +  txt)
 	default:
 		panic(fmt.Sprintln("unrecognized severity:", s))
 	}
