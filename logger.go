@@ -127,7 +127,11 @@ func Init(name string, verbose, systemLog bool, logFile io.Writer) *Logger {
 }
 
 func (l *Logger) SetPrefix(prefix string) {
-	l.prefix = prefix
+	if prefix!="" {
+		l.prefix = prefix + " "
+	} else {
+		l.prefix = prefix
+	}
 }
 
 // Close closes the default logger.
@@ -152,13 +156,13 @@ func (l *Logger) output(s severity, depth int, txt string) {
 	defer logLock.Unlock()
 	switch s {
 	case sInfo:
-		l.infoLog.Output(3+depth,l.prefix + " " + txt)
+		l.infoLog.Output(3+depth,l.prefix  + txt)
 	case sWarning:
-		l.warningLog.Output(3+depth,l.prefix + " " +  txt)
+		l.warningLog.Output(3+depth,l.prefix + txt)
 	case sError:
-		l.errorLog.Output(3+depth,l.prefix + " " +  txt)
+		l.errorLog.Output(3+depth,l.prefix + txt)
 	case sFatal:
-		l.fatalLog.Output(3+depth,l.prefix + " " +  txt)
+		l.fatalLog.Output(3+depth,l.prefix + txt)
 	default:
 		panic(fmt.Sprintln("unrecognized severity:", s))
 	}
